@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.util.SparseArray;
+import io.github.pixee.security.BoundedLineReader;
 import org.telegram.messenger.exoplayer2.C;
 import org.telegram.messenger.exoplayer2.ExoPlayer;
 import org.telegram.messenger.exoplayer2.ExoPlayerLibraryInfo;
@@ -780,7 +781,7 @@ public final class DashMediaSource implements MediaSource {
 
     @Override
     public Long parse(Uri uri, InputStream inputStream) throws IOException {
-      String firstLine = new BufferedReader(new InputStreamReader(inputStream)).readLine();
+      String firstLine = BoundedLineReader.readLine(new BufferedReader(new InputStreamReader(inputStream)), 5_000_000);
       return Util.parseXsDateTime(firstLine);
     }
 
@@ -790,7 +791,7 @@ public final class DashMediaSource implements MediaSource {
 
     @Override
     public Long parse(Uri uri, InputStream inputStream) throws IOException {
-      String firstLine = new BufferedReader(new InputStreamReader(inputStream)).readLine();
+      String firstLine = BoundedLineReader.readLine(new BufferedReader(new InputStreamReader(inputStream)), 5_000_000);
       try {
         // TODO: It may be necessary to handle timestamp offsets from UTC.
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
