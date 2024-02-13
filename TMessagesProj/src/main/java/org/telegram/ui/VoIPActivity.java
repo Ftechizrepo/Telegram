@@ -907,7 +907,9 @@ public class VoIPActivity extends Activity implements VoIPService.StateListener,
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (isIncomingWaiting && (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP)) {
             if(VoIPService.getSharedInstance()!=null)
-				VoIPService.getSharedInstance().stopRinging();
+				{
+				    VoIPService.getSharedInstance().stopRinging();
+				}
             else
                 finish();
             return true;
