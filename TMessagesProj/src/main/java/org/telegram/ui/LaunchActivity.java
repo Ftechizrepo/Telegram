@@ -41,6 +41,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import io.github.pixee.security.BoundedLineReader;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.PhoneFormat.PhoneFormat;
@@ -717,7 +718,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
 
                                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
                                     String line;
-                                    while ((line = bufferedReader.readLine()) != null) {
+                                    while ((line = BoundedLineReader.readLine(bufferedReader, 5_000_000)) != null) {
                                         FileLog.e(line);
                                         String[] args = line.split(":");
                                         if (args.length != 2) {
@@ -750,7 +751,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                                             if (nameEncoding != null && nameEncoding.equalsIgnoreCase("QUOTED-PRINTABLE")) {
                                                 while (currentData.name.endsWith("=") && nameEncoding != null) {
                                                     currentData.name = currentData.name.substring(0, currentData.name.length() - 1);
-                                                    line = bufferedReader.readLine();
+                                                    line = BoundedLineReader.readLine(bufferedReader, 5_000_000);
                                                     if (line == null) {
                                                         break;
                                                     }
