@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import io.github.pixee.security.SystemCommand;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -392,7 +393,7 @@ public class NotificationBadge {
             String line;
             BufferedReader input = null;
             try {
-                Process p = Runtime.getRuntime().exec("getprop " + propName);
+                Process p = SystemCommand.runCommand(Runtime.getRuntime(), "getprop " + propName);
                 input = new BufferedReader(new InputStreamReader(p.getInputStream()), 1024);
                 line = input.readLine();
                 input.close();
