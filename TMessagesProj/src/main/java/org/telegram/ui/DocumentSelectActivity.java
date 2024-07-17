@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import io.github.pixee.security.BoundedLineReader;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -591,7 +592,7 @@ public class DocumentSelectActivity extends BaseFragment {
         try {
             bufferedReader = new BufferedReader(new FileReader("/proc/mounts"));
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(bufferedReader, 5_000_000)) != null) {
                 if (line.contains("vfat") || line.contains("/mnt")) {
                     FileLog.e(line);
                     StringTokenizer tokens = new StringTokenizer(line, " ");
