@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Base64;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -680,7 +682,7 @@ public class ConnectionsManager {
         protected NativeByteBuffer doInBackground(Void... voids) {
             try {
                 String domain = String.format(Locale.US, native_isTestBackend() != 0 ? "tap%1$s.stel.com" : "ap%1$s.stel.com", dnsConfigVersion == 0 ? "" : "" + dnsConfigVersion);
-                URL downloadUrl = new URL("https://google.com/resolve?name=" + domain + "&type=16");
+                URL downloadUrl = Urls.create("https://google.com/resolve?name=" + domain + "&type=16", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 URLConnection httpConnection = downloadUrl.openConnection();
                 httpConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0 like Mac OS X) AppleWebKit/602.1.38 (KHTML, like Gecko) Version/10.0 Mobile/14A5297c Safari/602.1");
                 httpConnection.addRequestProperty("Host", "dns.google.com");
