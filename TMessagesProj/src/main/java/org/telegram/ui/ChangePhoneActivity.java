@@ -43,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import io.github.pixee.security.BoundedLineReader;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AndroidUtilities;
@@ -609,7 +610,7 @@ public class ChangePhoneActivity extends BaseFragment {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(getResources().getAssets().open("countries.txt")));
                 String line;
-                while ((line = reader.readLine()) != null) {
+                while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                     String[] args = line.split(";");
                     countriesArray.add(0, args[2]);
                     countriesMap.put(args[2], args[0]);
