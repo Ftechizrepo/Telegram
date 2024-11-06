@@ -18,6 +18,7 @@ import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Xml;
+import java.nio.file.Files;
 
 import org.telegram.messenger.time.FastDateFormat;
 import org.telegram.tgnet.ConnectionsManager;
@@ -1401,7 +1402,7 @@ public class LocaleController {
                 }
             }
             FileLog.d("save locale file to " + finalFile);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(finalFile));
+            BufferedWriter writer = Files.newBufferedWriter(finalFile.toPath());
             writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
             writer.write("<resources>\n");
             for (HashMap.Entry<String, String> entry : values.entrySet()) {

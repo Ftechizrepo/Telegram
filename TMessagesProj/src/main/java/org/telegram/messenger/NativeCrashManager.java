@@ -3,6 +3,7 @@ package org.telegram.messenger;
 import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
+import java.nio.file.Files;
 
 import net.hockeyapp.android.Constants;
 import net.hockeyapp.android.utils.SimpleMultipartEntity;
@@ -37,7 +38,7 @@ public class NativeCrashManager {
         try {
             String filename = UUID.randomUUID().toString();
             String path = Constants.FILES_PATH + "/" + filename + ".faketrace";
-            BufferedWriter write = new BufferedWriter(new FileWriter(path));
+            BufferedWriter write = Files.newBufferedWriter(path.toPath());
             write.write("Package: " + Constants.APP_PACKAGE + "\n");
             write.write("Version Code: " + Constants.APP_VERSION + "\n");
             write.write("Version Name: " + Constants.APP_VERSION_NAME + "\n");
