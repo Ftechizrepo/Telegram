@@ -3,6 +3,7 @@ package org.telegram.ui.Components.Paint;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.HandlerThread;
+import java.nio.file.Files;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -26,7 +27,7 @@ public class Slice {
 
         try {
             File outputDir = ApplicationLoader.applicationContext.getCacheDir();
-            file = File.createTempFile("paint", ".bin", outputDir);
+            file = Files.createTempFile(outputDir.toPath(), "paint", ".bin").toFile();
         } catch (Exception e) {
             FileLog.e(e);
         }
