@@ -10,6 +10,8 @@ package org.telegram.ui.Adapters;
 
 import android.location.Location;
 import android.os.AsyncTask;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -147,7 +149,7 @@ public abstract class BaseLocationAdapter extends RecyclerListView.SelectionAdap
                     StringBuilder result = null;
                     URLConnection httpConnection = null;
                     try {
-                        URL downloadUrl = new URL(url);
+                        URL downloadUrl = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                         httpConnection = downloadUrl.openConnection();
                         httpConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/47.0 (Chrome)");
                         httpConnection.addRequestProperty("Accept-Language", "en-us,en;q=0.5");
@@ -162,7 +164,7 @@ public abstract class BaseLocationAdapter extends RecyclerListView.SelectionAdap
                             if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM || status == HttpURLConnection.HTTP_SEE_OTHER) {
                                 String newUrl = httpURLConnection.getHeaderField("Location");
                                 String cookies = httpURLConnection.getHeaderField("Set-Cookie");
-                                downloadUrl = new URL(newUrl);
+                                downloadUrl = Urls.create(newUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                                 httpConnection = downloadUrl.openConnection();
                                 httpConnection.setRequestProperty("Cookie", cookies);
                                 httpConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20150101 Firefox/47.0 (Chrome)");
