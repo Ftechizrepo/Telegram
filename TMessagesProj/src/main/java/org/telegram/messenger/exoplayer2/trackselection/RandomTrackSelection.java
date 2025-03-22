@@ -16,6 +16,7 @@
 package org.telegram.messenger.exoplayer2.trackselection;
 
 import android.os.SystemClock;
+import java.security.SecureRandom;
 import org.telegram.messenger.exoplayer2.C;
 import org.telegram.messenger.exoplayer2.source.TrackGroup;
 import java.util.Random;
@@ -33,7 +34,7 @@ public final class RandomTrackSelection extends BaseTrackSelection {
     private final Random random;
 
     public Factory() {
-      random = new Random();
+      random = new SecureRandom();
     }
 
     /**
@@ -61,7 +62,7 @@ public final class RandomTrackSelection extends BaseTrackSelection {
    */
   public RandomTrackSelection(TrackGroup group, int... tracks) {
     super(group, tracks);
-    random = new Random();
+    random = new SecureRandom();
     selectedIndex = random.nextInt(length);
   }
 
