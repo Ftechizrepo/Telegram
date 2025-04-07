@@ -18,6 +18,8 @@ package org.telegram.messenger.exoplayer2.upstream;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import org.telegram.messenger.exoplayer2.C;
 import org.telegram.messenger.exoplayer2.util.Assertions;
 import org.telegram.messenger.exoplayer2.util.Predicate;
@@ -338,7 +340,7 @@ public class DefaultHttpDataSource implements HttpDataSource {
    * Establishes a connection, following redirects to do so where permitted.
    */
   private HttpURLConnection makeConnection(DataSpec dataSpec) throws IOException {
-    URL url = new URL(dataSpec.uri.toString());
+    URL url = Urls.create(dataSpec.uri.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     byte[] postBody = dataSpec.postBody;
     long position = dataSpec.position;
     long length = dataSpec.length;
@@ -444,7 +446,7 @@ public class DefaultHttpDataSource implements HttpDataSource {
       throw new ProtocolException("Null location redirect");
     }
     // Form the new url.
-    URL url = new URL(originalUrl, location);
+    URL url = Urls.create(originalUrl, location, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     // Check that the protocol of the new url is supported.
     String protocol = url.getProtocol();
     if (!"https".equals(protocol) && !"http".equals(protocol)) {
