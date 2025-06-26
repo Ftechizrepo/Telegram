@@ -17,6 +17,7 @@ package org.telegram.messenger.exoplayer2.upstream.cache;
 
 import android.util.Log;
 import android.util.SparseArray;
+import java.security.SecureRandom;
 import org.telegram.messenger.exoplayer2.C;
 import org.telegram.messenger.exoplayer2.upstream.cache.Cache.CacheException;
 import org.telegram.messenger.exoplayer2.util.Assertions;
@@ -306,7 +307,7 @@ import javax.crypto.spec.SecretKeySpec;
 
       if (writeEncrypted) {
         byte[] initializationVector = new byte[16];
-        new Random().nextBytes(initializationVector);
+        new SecureRandom().nextBytes(initializationVector);
         output.write(initializationVector);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
         try {
