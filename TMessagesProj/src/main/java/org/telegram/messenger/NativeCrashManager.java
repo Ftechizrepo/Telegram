@@ -3,6 +3,8 @@ package org.telegram.messenger;
 import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import net.hockeyapp.android.Constants;
 import net.hockeyapp.android.utils.SimpleMultipartEntity;
@@ -75,7 +77,7 @@ public class NativeCrashManager {
 
                     entity.writeLastBoundaryIfNeeds();
 
-                    HttpURLConnection urlConnection = (HttpURLConnection) new URL("https://rink.hockeyapp.net/api/2/apps/" + identifier + "/crashes/upload").openConnection();
+                    HttpURLConnection urlConnection = (HttpURLConnection) Urls.create("https://rink.hockeyapp.net/api/2/apps/" + identifier + "/crashes/upload", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openConnection();
                     urlConnection.setDoOutput(true);
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type", entity.getContentType());
