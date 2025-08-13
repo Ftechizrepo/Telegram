@@ -16,6 +16,7 @@
 package org.telegram.messenger.exoplayer2.source.hls.playlist;
 
 import android.net.Uri;
+import io.github.pixee.security.BoundedLineReader;
 import org.telegram.messenger.exoplayer2.C;
 import org.telegram.messenger.exoplayer2.Format;
 import org.telegram.messenger.exoplayer2.ParserException;
@@ -119,7 +120,7 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
         throw new UnrecognizedInputFormatException("Input does not start with the #EXTM3U header.",
             uri);
       }
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         line = line.trim();
         if (line.isEmpty()) {
           // Do nothing.
@@ -468,7 +469,7 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
         next = extraLines.poll();
         return true;
       }
-      while ((next = reader.readLine()) != null) {
+      while ((next = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         next = next.trim();
         if (!next.isEmpty()) {
           return true;

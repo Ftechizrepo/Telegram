@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import io.github.pixee.security.BoundedLineReader;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -219,7 +220,7 @@ public class CountrySelectActivity extends BaseFragment {
                 InputStream stream = ApplicationLoader.applicationContext.getResources().getAssets().open("countries.txt");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
                 String line;
-                while ((line = reader.readLine()) != null) {
+                while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                     String[] args = line.split(";");
                     Country c = new Country();
                     c.name = args[2];

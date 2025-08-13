@@ -91,6 +91,7 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.android.net.StripeApiHandler;
 import com.stripe.android.net.TokenParser;
+import io.github.pixee.security.BoundedLineReader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -539,7 +540,7 @@ public class PaymentFormActivity extends BaseFragment implements NotificationCen
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(context.getResources().getAssets().open("countries.txt")));
                 String line;
-                while ((line = reader.readLine()) != null) {
+                while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                     String[] args = line.split(";");
                     countriesArray.add(0, args[2]);
                     countriesMap.put(args[2], args[0]);

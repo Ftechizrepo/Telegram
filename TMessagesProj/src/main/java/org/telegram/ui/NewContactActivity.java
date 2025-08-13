@@ -37,6 +37,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import io.github.pixee.security.BoundedLineReader;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AndroidUtilities;
@@ -570,7 +571,7 @@ public class NewContactActivity extends BaseFragment implements AdapterView.OnIt
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(context.getResources().getAssets().open("countries.txt")));
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                 String[] args = line.split(";");
                 countriesArray.add(0, args[2]);
                 countriesMap.put(args[2], args[0]);
